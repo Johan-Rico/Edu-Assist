@@ -1,1 +1,1 @@
-Nuestro código, es el denominado EduAssist.txt. Cordial saludo.
+Nuestro código es el denominado EduAssist.txt. Cordial saludo.
