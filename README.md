@@ -1,1 +1,2 @@
-Nuestro código es el denominado EduAssist.java. Cordial saludo.
+El código se encuentra en la rama "code".
+Se ha desarrollado en IntelliJ IDEA con JavaFX y Scene Builder.
