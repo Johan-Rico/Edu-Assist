@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -25,6 +26,8 @@ public class Main extends Application {
 
     public void changeScene(String fxml, String title) throws IOException {
         Parent pane = FXMLLoader.load(getClass().getResource(fxml));
+        stg.setWidth(1200);
+        stg.setHeight(600);
         stg.setResizable(true);
         stg.setTitle(title);
         stg.getScene().setRoot(pane);

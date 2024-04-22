@@ -32,11 +32,16 @@ public class LogIn {
 
     private void checkLogin() throws IOException {
         Main m = new Main();
-        if (username.getText().equals("j") && password.getText().equals("123")) {
+        String user = username.getText();
+        String pass = password.getText();
+
+        if (DataBase.checkUserData(user, pass)) {
             errorLabel.setVisible(false);
-            m.changeScene("Calendar.fxml", "Inicio");
+            DataBase.setData(user);
+            m.changeScene("Calendar.fxml", "Edu-Assist");
+
         }
-        else if (username.getText().isEmpty() || password.getText().isEmpty()) {
+        else if (user.isEmpty() || pass.isEmpty()) {
             errorLabel.setText("Ingrese su usuario y contraseña");
         } else {
             errorLabel.setText("Usuario o contraseña incorrectos");

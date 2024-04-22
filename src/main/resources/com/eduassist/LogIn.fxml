@@ -10,26 +10,37 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eduassist.LogIn">
    <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f5f5f5;" styleClass="field">
-      <TextField fx:id="username" layoutX="124.0" layoutY="125.0" prefHeight="35.0" prefWidth="353.0" />
-      <PasswordField fx:id="password" layoutX="124.0" layoutY="214.0" prefHeight="35.0" prefWidth="353.0" />
-      <Button fx:id="login" layoutX="232.0" layoutY="302.0" mnemonicParsing="false" onAction="#userLogIn" prefHeight="44.0" prefWidth="137.0" style="-fx-background-color: #009;" text="INGRESAR" textFill="WHITE">
+      <TextField fx:id="username" layoutX="124.0" layoutY="150.0" prefHeight="35.0" prefWidth="353.0">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <PasswordField fx:id="password" layoutX="124.0" layoutY="239.0" prefHeight="35.0" prefWidth="353.0">
+         <font>
+            <Font size="14.0" />
+         </font></PasswordField>
+      <Button fx:id="login" layoutX="232.0" layoutY="304.0" mnemonicParsing="false" onAction="#userLogIn" prefHeight="44.0" prefWidth="137.0" style="-fx-background-color: #009;" text="INGRESAR" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <Label fx:id="errorLabel" layoutX="116.0" layoutY="39.0" prefHeight="55.0" prefWidth="369.0" style="-fx-alignment: center;" textFill="#000ac9">
+      <Label fx:id="errorLabel" layoutX="72.0" layoutY="91.0" prefHeight="24.0" prefWidth="458.0" style="-fx-alignment: center;" textFill="#000ac9">
          <font>
-            <Font name="Calibri" size="18.0" />
+            <Font name="Calibri" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="124.0" layoutY="101.0" prefHeight="24.0" prefWidth="250.0" text="Usuario">
+      <Label layoutX="124.0" layoutY="126.0" prefHeight="24.0" prefWidth="250.0" text="Usuario">
          <font>
-            <Font name="Calibri" size="14.0" />
+            <Font name="Calibri" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="124.0" layoutY="187.0" prefHeight="24.0" prefWidth="250.0" text="Contraseña">
+      <Label layoutX="124.0" layoutY="212.0" prefHeight="24.0" prefWidth="250.0" text="Contraseña">
          <font>
-            <Font name="Calibri" size="14.0" />
+            <Font name="Calibri" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="202.0" layoutY="33.0" prefHeight="17.0" prefWidth="197.0" style="-fx-alignment: center;" text="Edu-Assist" textAlignment="CENTER" textFill="#002cdd" textOverrun="CLIP" underline="true">
+         <font>
+            <Font name="System Bold Italic" size="32.0" />
          </font>
       </Label>
    </AnchorPane>
