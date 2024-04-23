@@ -44,42 +44,38 @@ public class Calendar {
 
         calendarGridPane.add(hourGrid(), 0, 0);
 
-        for (int week = 0; week < 4; week++) {  // Crear 4 semanas
+        for (int col = 0; col < 7; col++) {         // Crear los 7 días de la semana
+            GridPane columnGrid = new GridPane();
 
-            int weekIndex = week * 7;       // Aumentar la posición de la columna según la semana
+            Label day = new Label(days[col]);
 
-            for (int col = 0; col < 7; col++) {         // Crear los 7 días de la semana
-                GridPane columnGrid = new GridPane();
+            day.setPrefSize(cellWidth, cellHeight * 2);
+            day.setStyle("-fx-font: 16 system; -fx-font-weight: bold; -fx-background-color: #fafafa; -fx-alignment: center; -fx-border-color: #d6d6d6; -fx-border-width: 1px");
+            columnGrid.add(day, 0, 0);
 
-                Label day = new Label(days[col]);
+            for (int row = 1; row < 35; row++) {        // Crear todas las filas de cada día
 
-                day.setPrefSize(cellWidth, cellHeight * 2);
-                day.setStyle("-fx-font: 16 system; -fx-font-weight: bold; -fx-background-color: #fafafa; -fx-alignment: center; -fx-border-color: #d6d6d6; -fx-border-width: 1px");
-                columnGrid.add(day, 0, 0);
+                Button cell = new Button();
+                cell.setStyle("-fx-border-color: #d6d6d6; -fx-border-width: 1px; -fx-background-color: #fff");
 
-                for (int row = 1; row < 35; row++) {        // Crear todas las filas de cada día
+                cell.setMinSize(cellWidth,0);
+                cell.setPrefSize(cellWidth, cellHeight);
+                cell.setMaxSize(cellWidth, cellHeight);
 
-                    Button cell = new Button();
-                    cell.setStyle("-fx-border-color: #d6d6d6; -fx-border-width: 1px; -fx-background-color: #fff");
+                cell.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        // Añadir algo al calendario
+                    }
+                });
+                columnGrid.add(cell, 0, row);
 
-                    cell.setMinSize(cellWidth,0);
-                    cell.setPrefSize(cellWidth, cellHeight);
-                    cell.setMaxSize(cellWidth, cellHeight);
-
-                    cell.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            // Añadir algo al calendario
-                        }
-                    });
-                    columnGrid.add(cell, 0, row);
-
-                }
-
-                calendarGridPane.add(columnGrid, col + weekIndex + 1, 0);
             }
-            updateWeek(calendarGridPane, weekIndex);
+
+            calendarGridPane.add(columnGrid, col + 1, 0);
         }
+        updateWeek(calendarGridPane);
+
         return calendarGridPane;
     }
 
@@ -107,7 +103,7 @@ public class Calendar {
         return hourGrid;
     }
 
-    private void updateWeek(GridPane grid, int weekIndex) {
+    private void updateWeek(GridPane grid) {
 
         for (Subject subject : subjects) {
 
@@ -119,12 +115,12 @@ public class Calendar {
                 int hour = (int)(cl[1] * 2) - 9;
                 int time = (int)(cl[2] * 2);
 
-                GridPane col = (GridPane) grid.getChildren().get(day + 1 + weekIndex);
+                GridPane col = (GridPane) grid.getChildren().get(day + 1);
 
                 Button subjectButton = new Button(subject.getName() + "\n" + subject.getClassroom());
                 subjectButton.setWrapText(true);
                 subjectButton.setTextAlignment(TextAlignment.CENTER);
-                subjectButton.setStyle("-fx-font: 16 system; -fx-font-weight: bold; -fx-background-color: #0024aa; -fx-border-color: #606060; -fx-border-width: 1px; -fx-text-fill: #e4e4e4");
+                subjectButton.setStyle("-fx-font: 14 system; -fx-font-weight: bold; -fx-background-color: #0024aa; -fx-border-color: #606060; -fx-border-width: 1px; -fx-text-fill: #e4e4e4");
                 subjectButton.setPrefSize(cellWidth, cellHeight * time);
                 col.add(subjectButton, 0, hour);
 

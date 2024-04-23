@@ -2,6 +2,7 @@ package com.eduassist;
 
 public class Subject {
 
+    private final String code;
     private final String name;
     private final String teacher;
     private final String classroom;
@@ -17,8 +18,9 @@ public class Subject {
     private final int umes;
     private float targetAverage;
 
-    public Subject(String name, String teacher, String classroom, String percentage, String grades, String gradeNames, String schedule, int credits, int umes, float targetAverage) {
+    public Subject(String code, String name, String teacher, String classroom, String percentage, String grades, String gradeNames, String schedule, int credits, int umes, float targetAverage) {
 
+        this.code = code;
         this.name = name;
         this.teacher = teacher;
         this.classroom = classroom;
@@ -131,6 +133,7 @@ public class Subject {
     public void setTargetAverage(float targetAverage) {
         this.targetAverage = targetAverage;
         updateInfo();
+        DataBase.updateTarget(code, targetAverage);
     }
 
     private void updateInfo() {
@@ -141,6 +144,10 @@ public class Subject {
     }
 
     // ------------------------ //   GET   // ------------------------ //
+
+    public String getCode() {
+        return this.code;
+    }
 
     public String getName() {
         return this.name;

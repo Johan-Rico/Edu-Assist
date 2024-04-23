@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Accordion;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class SubjectInfo {
 
@@ -25,6 +27,8 @@ public class SubjectInfo {
     private TitledPane gradesPane;
     @FXML
     private Accordion accordion;
+    @FXML
+    private VBox infoBox;
 
     private Subject subject;
 
@@ -41,7 +45,7 @@ public class SubjectInfo {
 
     public void setInfo(Subject subject) {
         this.subject = subject;
-        nameLabel.setText(subject.getName());
+        nameLabel.setText(subject.getName() + "\n" + subject.getCode());
         setGrades();
 
         weightedAverageLabel.setText(Float.toString(subject.getWeightedAverage()));
@@ -49,7 +53,7 @@ public class SubjectInfo {
         targetAverageField.setText(Float.toString(subject.getTargetAverage()));
 
         checkText();
-
+        fillInfo();
     }
 
     private void setGrades() {
@@ -115,6 +119,8 @@ public class SubjectInfo {
     private void targetGrade(ActionEvent actionEvent) {
         targetGradeButton.setDisable(true);
         neededGradeButton.setDisable(false);
+        targetAverageField.setDisable(false);
+        disableButton();
         inTarget = true;
 
         updateGrades();
@@ -124,6 +130,8 @@ public class SubjectInfo {
     private void neededGrade(ActionEvent actionEvent) {
         neededGradeButton.setDisable(true);
         targetGradeButton.setDisable(false);
+        targetAverageField.setDisable(true);
+        updateTargetButton.setDisable(true);
         inTarget = false;
 
         updateGrades();
@@ -133,6 +141,7 @@ public class SubjectInfo {
     private void updateTarget(ActionEvent actionEvent) {
         subject.setTargetAverage(Float.parseFloat(targetAverageField.getText()));
         updateTargetButton.setDisable(true);
+        targetAverageField.setText(Float.toString(subject.getTargetAverage()));
 
         updateGrades();
     }
@@ -140,22 +149,53 @@ public class SubjectInfo {
     private void checkText() {
         targetAverageField.textProperty().addListener((_, oldValue, newValue) -> {
 
-            updateTargetButton.setDisable(targetAverageField.getText().equals(Float.toString(subject.getTargetAverage())));
-
-            if (newValue.length() > oldValue.length()) {
-                if (!newValue.matches("(\\d)?\\.?\\d?")) {
-                    targetAverageField.setText(oldValue);
-                } else if (oldValue.isEmpty() && !(Character.isDigit(newValue.charAt(0)) && Integer.parseInt(newValue) <= 5)) {
-                    targetAverageField.setText(oldValue);
-                } else if (newValue.length() == 2) {
-                    if (Integer.parseInt(oldValue) == 5) {
-                        targetAverageField.setText(oldValue);
-                    } else if (newValue.charAt(1) != '.') {
-                        targetAverageField.setText(newValue.charAt(0) + "." + newValue.charAt(1));
-                    }
-                }
+            if (!newValue.matches("\\d?\\.?\\d?")) {
+                targetAverageField.setText(oldValue);
+            } else if (!newValue.isEmpty() && Character.isDigit(newValue.charAt(0)) && Float.parseFloat(newValue) > 5) {
+                targetAverageField.setText(oldValue);
             }
+
+            if (newValue.matches("\\d\\d")) {
+                targetAverageField.setText(Character.toString(newValue.charAt(0)) + "." + Character.toString(newValue.charAt(1)));
+            }
+
+            disableButton();
+
         });
+    }
+
+    private void disableButton() {
+        if (!targetAverageField.getText().isEmpty() && !targetAverageField.getText().equals(".")) {
+            updateTargetButton.setDisable(Float.parseFloat(targetAverageField.getText()) == subject.getTargetAverage());
+        } else {
+            updateTargetButton.setDisable(true);
+        }
+    }
+
+    private void fillInfo() {
+
+        addLabel("MATERIA: ", subject.getName());
+        addLabel("CÓDIGO: ", subject.getCode());
+        addLabel("PROFESOR: ", subject.getTeacher());
+        addLabel("SALÓN: ", subject.getClassroom());
+        addLabel("PROMEDIO PONDERADO: ", Float.toString(subject.getWeightedAverage()));
+        addLabel("PROMEDIO TOTAL: ", Float.toString(subject.getTotalAverage()));
+        addLabel("CRÉDITOS: ", Integer.toString(subject.getCredits()));
+        addLabel("UMES: ", Integer.toString(subject.getUmes()));
+
+    }
+
+    private void addLabel(String nameStg, String valueStg) {
+
+        Label nameLabel = new Label(nameStg);
+        Label valueLabel = new Label(valueStg);
+
+        nameLabel.setStyle("al-fx-font: 24 arial; -fx-font-weight: bold;");
+        valueLabel.setStyle("al-fx-font: 24 arial; -fx-font-weight: normal;");
+
+        HBox box = new HBox(nameLabel, valueLabel);
+        infoBox.getChildren().add(box);
+
     }
 
 }

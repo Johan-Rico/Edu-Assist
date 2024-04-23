@@ -6,6 +6,10 @@ import java.util.ArrayList;
 public class DataBase {
 
     private static String username;
+
+    private static final String subjectDB = "jdbc:sqlite:src/DataBase/Subject.db" ;
+    private static final String userLoginDB = "jdbc:sqlite:src/DataBase/userLogIn.db";
+
     static ArrayList<Subject> subjects = new ArrayList<>();
 
     public static void setData(String user) {
@@ -16,11 +20,11 @@ public class DataBase {
     public static boolean checkUserData(String username, String password) {
 
         boolean found = false;
-
         Connection conn = null;
+
         try {
 
-            conn = DriverManager.getConnection("jdbc:sqlite:src/DataBase/userLogIn.db");
+            conn = DriverManager.getConnection(userLoginDB);
 
             String sql = "SELECT * FROM User WHERE username = ? AND password = ?";
 
@@ -53,7 +57,7 @@ public class DataBase {
 
         try {
 
-            conn = DriverManager.getConnection("jdbc:sqlite:src/DataBase/Subject.db");
+            conn = DriverManager.getConnection(subjectDB);
 
             Statement stmt = conn.createStatement();
 
@@ -63,6 +67,7 @@ public class DataBase {
 
             while (rs.next()) {
 
+                String code = rs.getString("code");
                 String name = rs.getString("name");
                 String teacher = rs.getString("teacher");
                 String classroom = rs.getString("classroom");
@@ -74,9 +79,38 @@ public class DataBase {
                 int umes = rs.getInt("umes");
                 float targetAverage = rs.getFloat("targetAverage");
 
-                Subject subject = new Subject(name, teacher, classroom, percentage, grades, gradeNames, schedule, credits, umes, targetAverage);
+                Subject subject = new Subject(code, name, teacher, classroom, percentage, grades, gradeNames, schedule, credits, umes, targetAverage);
                 subjects.add(subject);
 
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al leer datos de la base de datos SQLite: " + e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión a la base de datos SQLite: " + e.getMessage());
+            }
+        }
+    }
+
+    public static void updateTarget(String code, float target) {
+
+        Connection conn = null;
+
+        try {
+
+            conn = DriverManager.getConnection(subjectDB);
+
+            String sql = String.format("UPDATE %s SET targetAverage = %f WHERE code = '%s'", username, target, code);
+
+            try (Statement stmt = conn.createStatement()) {
+                stmt.executeUpdate(sql);
+            } catch (SQLException e) {
+                System.out.println("Error al ejecutar la sentencia SQL: " + e.getMessage());
             }
 
         } catch (SQLException e) {
