@@ -17,8 +17,10 @@ public class Subject {
     private final int credits;
     private final int umes;
     private float targetAverage;
+    private String subjectColor;
+    private String textColor;
 
-    public Subject(String code, String name, String teacher, String classroom, String percentage, String grades, String gradeNames, String schedule, int credits, int umes, float targetAverage) {
+    public Subject(String code, String name, String teacher, String classroom, String percentage, String grades, String gradeNames, String schedule, int credits, int umes, float targetAverage, String subjectColor, String textColor) {
 
         this.code = code;
         this.name = name;
@@ -31,6 +33,8 @@ public class Subject {
         this.credits = credits;
         this.umes = umes;
         this.targetAverage = targetAverage;
+        this.subjectColor = subjectColor;
+        this.textColor = textColor;
 
         this.totalAverage = calculateTotalAverage(this.percentage, this.grades);
         this.weightedAverage = calculateWeightedAverage(this.percentage, this.grades);
@@ -136,6 +140,12 @@ public class Subject {
         DataBase.updateTarget(code, targetAverage);
     }
 
+    public void setColors(String subjectColor, String textColor) {
+        this.subjectColor = subjectColor;
+        this.textColor = textColor;
+        DataBase.updateColor(code, subjectColor, textColor);
+    }
+
     private void updateInfo() {
         this.totalAverage = calculateTotalAverage(this.percentage, this.grades);
         this.weightedAverage = calculateWeightedAverage(this.percentage, this.grades);
@@ -203,5 +213,13 @@ public class Subject {
 
     public float getTargetAverage() {
         return targetAverage;
+    }
+
+    public String getSubjectColor() {
+        return this.subjectColor;
+    }
+
+    public String getTextColor() {
+        return this.textColor;
     }
 }

@@ -21,7 +21,6 @@ public class LogIn {
     @FXML
     private Label errorLabel;
 
-
     public void initialize() {
         username.requestFocus();
     }

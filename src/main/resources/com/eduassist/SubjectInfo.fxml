@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -19,7 +20,7 @@
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
-            <Label fx:id="nameLabel" prefHeight="105.0" prefWidth="400.0" style="-fx-alignment: center; -fx-background-color: #002376;" textAlignment="CENTER" textFill="WHITE" wrapText="true" BorderPane.alignment="CENTER">
+            <Label fx:id="SubjectNameLabel" prefHeight="105.0" prefWidth="400.0" style="-fx-alignment: center;" textAlignment="CENTER" textFill="#e4e4e4" wrapText="true" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -175,6 +176,43 @@
                         <VBox fx:id="infoBox" prefHeight="200.0" prefWidth="100.0" spacing="5.0" style="-fx-background-color: #f9f9f9;" />
                      </content>
                 </TitledPane>
+                  <TitledPane expanded="false" text="Colores">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <content>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f9f9f9;">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="370.0" spacing="10.0">
+                                 <children>
+                                    <Label prefHeight="39.0" prefWidth="180.0" style="-fx-alignment: center;" text="Color de la Materia: ">
+                                       <font>
+                                          <Font name="Arial Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ColorPicker fx:id="subjectColor" onAction="#changeColor" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: #f2f2f2; -fx-border-color: #636363; -fx-border-width: 2px; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="370.0" spacing="10.0">
+                                 <children>
+                                    <Label prefHeight="39.0" prefWidth="180.0" style="-fx-alignment: center;" text="Color del Texto: ">
+                                       <font>
+                                          <Font name="Arial Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ColorPicker fx:id="textColor" onAction="#changeColor" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: #f2f2f2; -fx-border-color: #636363; -fx-border-width: 2px; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
               </panes>
             </Accordion>
          </center>

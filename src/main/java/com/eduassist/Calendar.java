@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -22,43 +22,47 @@ public class Calendar {
 
     @FXML
     private AnchorPane calendarPane;
+    @FXML
+    private ScrollPane hourScrollPane;
+    @FXML
+    private ScrollPane dayScrollPane;
+    @FXML
+    private ScrollPane calendarScrollPane;
 
     private static final int cellHeight = 30;
     private static final int cellWidth = 200;
-    private  static ArrayList<Subject> subjects = new ArrayList<>();
+    private static ArrayList<Subject> subjects = new ArrayList<>();
+    private static GridPane calendarGrid;
 
     @FXML
     public void initialize() {
+
         subjects = DataBase.subjects;
-        GridPane calendarGrid = createCalendarGrid();
+        calendarGrid = createCalendarGrid();
+        updateWeek();
         calendarPane.getChildren().add(calendarGrid);
-        //updateCalendarTest(calendarGrid);
+
+        hourScrollPane.vvalueProperty().bindBidirectional(calendarScrollPane.vvalueProperty());
+        calendarScrollPane.vvalueProperty().bindBidirectional(hourScrollPane.vvalueProperty());
+
+        dayScrollPane.hvalueProperty().bindBidirectional(calendarScrollPane.hvalueProperty());
+        calendarScrollPane.hvalueProperty().bindBidirectional(dayScrollPane.hvalueProperty());
+
     }
 
-    private final String[] days = {"LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES", "SÁBADO", "DOMINGO"};
-
-
-    private GridPane createCalendarGrid() {
+    private static GridPane createCalendarGrid() {
 
         GridPane calendarGridPane = new GridPane();
-
-        calendarGridPane.add(hourGrid(), 0, 0);
 
         for (int col = 0; col < 7; col++) {         // Crear los 7 días de la semana
             GridPane columnGrid = new GridPane();
 
-            Label day = new Label(days[col]);
-
-            day.setPrefSize(cellWidth, cellHeight * 2);
-            day.setStyle("-fx-font: 16 system; -fx-font-weight: bold; -fx-background-color: #fafafa; -fx-alignment: center; -fx-border-color: #d6d6d6; -fx-border-width: 1px");
-            columnGrid.add(day, 0, 0);
-
-            for (int row = 1; row < 35; row++) {        // Crear todas las filas de cada día
+            for (int row = 0; row < 34; row++) {        // Crear todas las filas de cada día
 
                 Button cell = new Button();
                 cell.setStyle("-fx-border-color: #d6d6d6; -fx-border-width: 1px; -fx-background-color: #fff");
 
-                cell.setMinSize(cellWidth,0);
+                cell.setMinSize(cellWidth, 0);
                 cell.setPrefSize(cellWidth, cellHeight);
                 cell.setMaxSize(cellWidth, cellHeight);
 
@@ -74,36 +78,10 @@ public class Calendar {
 
             calendarGridPane.add(columnGrid, col + 1, 0);
         }
-        updateWeek(calendarGridPane);
-
         return calendarGridPane;
     }
 
-    private static GridPane hourGrid() {
-
-        GridPane hourGrid = new GridPane();
-
-        Label hourTitle = new Label("HORA");
-        hourTitle.setPrefSize(150, cellHeight * 2);
-        hourTitle.setStyle("-fx-font: 16 system; -fx-font-weight: bold; -fx-background-color: #fafafa; -fx-alignment: center; -fx-border-color: #d6d6d6; -fx-border-width: 1px;");
-        hourGrid.add(hourTitle, 0, 0);
-
-        for (int h = 5; h < 22; h++) {
-            String min1 = ":00";
-            String min2 = ":30";
-            for (int i = 0; i < 2; i++) {
-                Label hour = new Label(h + min1 + " - " + (h + i) + min2);
-                hour.setPrefSize(150, cellHeight);
-                hour.setStyle("-fx-font: 14 system; -fx-font-weight: bold; -fx-background-color: #fafafa; -fx-alignment: center; -fx-border-color: #d6d6d6; -fx-border-width: 1px;");
-                hourGrid.add(hour, 0, 2 * (h - 4) + i);
-                min1 = ":30";
-                min2 = ":00";
-            }
-        }
-        return hourGrid;
-    }
-
-    private void updateWeek(GridPane grid) {
+    public static void updateWeek() {
 
         for (Subject subject : subjects) {
 
@@ -111,16 +89,17 @@ public class Calendar {
 
             for (float[] cl : schedule) {
 
-                int day = (int)cl[0];
-                int hour = (int)(cl[1] * 2) - 9;
-                int time = (int)(cl[2] * 2);
+                int day = (int) cl[0];
+                int hour = (int) (cl[1] * 2) - 10;
+                int time = (int) (cl[2] * 2);
 
-                GridPane col = (GridPane) grid.getChildren().get(day + 1);
+                GridPane col = (GridPane) calendarGrid.getChildren().get(day);
 
                 Button subjectButton = new Button(subject.getName() + "\n" + subject.getClassroom());
                 subjectButton.setWrapText(true);
                 subjectButton.setTextAlignment(TextAlignment.CENTER);
-                subjectButton.setStyle("-fx-font: 14 system; -fx-font-weight: bold; -fx-background-color: #0024aa; -fx-border-color: #606060; -fx-border-width: 1px; -fx-text-fill: #e4e4e4");
+                subjectButton.setStyle("-fx-font: 14 system; -fx-font-weight: bold; -fx-background-color: " + subject.getSubjectColor() +
+                        "; -fx-border-color: #606060; -fx-border-width: 1px; -fx-text-fill: " + subject.getTextColor());
                 subjectButton.setPrefSize(cellWidth, cellHeight * time);
                 col.add(subjectButton, 0, hour);
 
@@ -133,6 +112,7 @@ public class Calendar {
                             throw new RuntimeException(e);
                         }
                     }
+
                 });
 
 
@@ -144,13 +124,12 @@ public class Calendar {
             }
         }
 
-
     }
 
-    private void showInfo(Subject subject) throws IOException {
+    private static void showInfo(Subject subject) throws IOException {
 
         Stage subjectStage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SubjectInfo.fxml"));
+        FXMLLoader loader = new FXMLLoader(Calendar.class.getResource("SubjectInfo.fxml"));
         StackPane subjectPanel = loader.load();
 
         SubjectInfo info = loader.getController();

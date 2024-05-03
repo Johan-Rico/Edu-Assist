@@ -2,14 +2,10 @@ package com.eduassist;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.Accordion;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class SubjectInfo {
 
@@ -20,7 +16,7 @@ public class SubjectInfo {
     @FXML
     private GridPane gradesGrid;
     @FXML
-    private Label weightedAverageLabel, totalAverageLabel, nameLabel;
+    private Label weightedAverageLabel, totalAverageLabel, SubjectNameLabel;
     @FXML
     private TextField targetAverageField;
     @FXML
@@ -29,6 +25,10 @@ public class SubjectInfo {
     private Accordion accordion;
     @FXML
     private VBox infoBox;
+    @FXML
+    private ColorPicker subjectColor;
+    @FXML
+    private ColorPicker textColor;
 
     private Subject subject;
 
@@ -45,7 +45,10 @@ public class SubjectInfo {
 
     public void setInfo(Subject subject) {
         this.subject = subject;
-        nameLabel.setText(subject.getName() + "\n" + subject.getCode());
+        SubjectNameLabel.setText(subject.getName() + "\n" + subject.getCode());
+        subjectColor.setValue(Color.valueOf(subject.getSubjectColor()));
+        textColor.setValue(Color.valueOf(subject.getTextColor()));
+        updateColors();
         setGrades();
 
         weightedAverageLabel.setText(Float.toString(subject.getWeightedAverage()));
@@ -147,7 +150,7 @@ public class SubjectInfo {
     }
 
     private void checkText() {
-        targetAverageField.textProperty().addListener((_, oldValue, newValue) -> {
+        targetAverageField.textProperty().addListener((observable, oldValue, newValue) -> {
 
             if (!newValue.matches("\\d?\\.?\\d?")) {
                 targetAverageField.setText(oldValue);
@@ -196,6 +199,26 @@ public class SubjectInfo {
         HBox box = new HBox(nameLabel, valueLabel);
         infoBox.getChildren().add(box);
 
+    }
+
+    public void changeColor(ActionEvent actionEvent) {
+        subject.setColors(toRGBA(subjectColor.getValue()), toRGBA(textColor.getValue()));
+        updateColors();
+        Calendar.updateWeek();
+    }
+
+    private String toRGBA(Color color) {
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        double a = color.getOpacity();
+
+        return String.format("rgba(%d, %d, %d, %.2f)", r, g, b, a);
+    }
+
+    private void updateColors() {
+        SubjectNameLabel.setBackground(new Background(new BackgroundFill(Paint.valueOf(subject.getSubjectColor()), null, null)));
+        SubjectNameLabel.setTextFill(Paint.valueOf(subject.getTextColor()));
     }
 
 }
