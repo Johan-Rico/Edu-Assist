@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 public class SubjectInfo {
 
@@ -46,8 +45,8 @@ public class SubjectInfo {
     public void setInfo(Subject subject) {
         this.subject = subject;
         SubjectNameLabel.setText(subject.getName() + "\n" + subject.getCode());
-        subjectColor.setValue(Color.valueOf(subject.getSubjectColor()));
-        textColor.setValue(Color.valueOf(subject.getTextColor()));
+        subjectColor.setValue(stringToColor(subject.getSubjectColor()));
+        textColor.setValue(stringToColor(subject.getTextColor()));
         updateColors();
         setGrades();
 
@@ -202,12 +201,12 @@ public class SubjectInfo {
     }
 
     public void changeColor(ActionEvent actionEvent) {
-        subject.setColors(toRGBA(subjectColor.getValue()), toRGBA(textColor.getValue()));
+        subject.setColors(colorToString(subjectColor.getValue()), colorToString(textColor.getValue()));
         updateColors();
         Calendar.updateWeek();
     }
 
-    private String toRGBA(Color color) {
+    private String colorToString(Color color) {
         int r = (int) (color.getRed() * 255);
         int g = (int) (color.getGreen() * 255);
         int b = (int) (color.getBlue() * 255);
@@ -216,9 +215,26 @@ public class SubjectInfo {
         return String.format("rgba(%d, %d, %d, %.2f)", r, g, b, a);
     }
 
+    private Color stringToColor(String color) {
+
+        String[] components = color.substring(5, color.length() - 1).split(",");
+
+        double red = Double.parseDouble(components[0].trim());
+        double green = Double.parseDouble(components[1].trim());
+        double blue = Double.parseDouble(components[2].trim());
+        double alpha = Double.parseDouble(components[3].trim());
+
+        red /= 255.0;
+        green /= 255.0;
+        blue /= 255.0;
+
+        return new Color(red, green, blue, alpha);
+
+    }
+
     private void updateColors() {
-        SubjectNameLabel.setBackground(new Background(new BackgroundFill(Paint.valueOf(subject.getSubjectColor()), null, null)));
-        SubjectNameLabel.setTextFill(Paint.valueOf(subject.getTextColor()));
+        SubjectNameLabel.setBackground(new Background(new BackgroundFill(stringToColor(subject.getSubjectColor()), null, null)));
+        SubjectNameLabel.setTextFill(stringToColor(subject.getTextColor()));
     }
 
 }

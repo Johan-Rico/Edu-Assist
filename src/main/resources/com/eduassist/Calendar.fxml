@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -10,16 +11,14 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="871.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eduassist.Calendar">
-    <left>
-        <ListView prefHeight="512.0" prefWidth="251.0" BorderPane.alignment="CENTER" />
-    </left>
     <top>
-        <AnchorPane prefHeight="79.0" prefWidth="871.0" style="-fx-background-color: #006;" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="header" prefHeight="90.0" prefWidth="871.0" style="-fx-background-color: #006;" BorderPane.alignment="CENTER">
             <children>
-                <Label layoutX="37.0" layoutY="18.0" prefHeight="44.0" prefWidth="197.0" text="Edu-Assist" textFill="WHITE">
+                <Label layoutX="35.0" layoutY="23.0" prefHeight="44.0" prefWidth="197.0" text="Edu-Assist" textFill="WHITE">
                     <font>
                         <Font name="Eras Bold ITC" size="32.0" />
                     </font>
@@ -333,4 +332,56 @@
          </top>
         </BorderPane>
     </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="870.0" spacing="40.0" style="-fx-background-color: #5a5a5a;">
+         <children>
+            <Hyperlink onAction="#openInteractiva" text="Interactiva" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink onAction="#openReservas" text="Reservar Sala" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Hyperlink>
+         </children>
+      </HBox>
+   </bottom>
+   <left>
+      <VBox prefHeight="374.0" prefWidth="250.0" spacing="3.0" style="-fx-background-color: #e5e5e5; -fx-border-color: #727272; -fx-border-width: 2px;" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #f8f8f8; -fx-alignment: bottom_center;" text="Horario">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #f8f8f8; -fx-alignment: bottom_center;" text="Profesores">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #f8f8f8; -fx-alignment: bottom_center;" text="Materias">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #f8f8f8; -fx-alignment: bottom_center;" text="Fechas Importantes">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #f8f8f8; -fx-alignment: bottom_center;" text="Métodos de Estudio">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #f8f8f8; -fx-alignment: bottom_center;" text="Historial Académico">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </left>
 </BorderPane>

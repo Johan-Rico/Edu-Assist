@@ -6,11 +6,10 @@ import java.util.ArrayList;
 public class DataBase {
 
     private static String username;
+    private static ArrayList<Subject> subjects = new ArrayList<>();
 
     private static final String userLoginDB = "jdbc:sqlite:src/DataBase/userLogIn.db";
     private static final String subjectDB = "jdbc:sqlite:src/DataBase/Subject.db";
-
-    static ArrayList<Subject> subjects = new ArrayList<>();
 
     public static void setData(String user) {
         username = user;

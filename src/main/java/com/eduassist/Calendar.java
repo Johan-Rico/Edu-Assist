@@ -5,21 +5,22 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.awt.Desktop;
+import java.net.URI;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Calendar {
 
+    @FXML
+    private AnchorPane header;
     @FXML
     private AnchorPane calendarPane;
     @FXML
@@ -37,7 +38,7 @@ public class Calendar {
     @FXML
     public void initialize() {
 
-        subjects = DataBase.subjects;
+        subjects = DataBase.getSubjects();
         calendarGrid = createCalendarGrid();
         updateWeek();
         calendarPane.getChildren().add(calendarGrid);
@@ -145,6 +146,22 @@ public class Calendar {
         subjectStage.initModality(Modality.APPLICATION_MODAL);
         subjectStage.showAndWait();
 
+    }
+
+    public void openInteractiva(ActionEvent actionEvent) {
+        try {
+            Desktop.getDesktop().browse(new URI("https://interactivavirtual.eafit.edu.co/"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void openReservas(ActionEvent actionEvent) {
+        try {
+            Desktop.getDesktop().browse(new URI("https://bdigital.spapps.eafit.edu.co/openroom/index.php"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 
