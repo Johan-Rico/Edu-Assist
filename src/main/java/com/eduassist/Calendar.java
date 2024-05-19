@@ -5,8 +5,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.awt.Desktop;
@@ -20,23 +18,18 @@ import java.util.ArrayList;
 public class Calendar {
 
     @FXML
-    private AnchorPane header;
-    @FXML
     private AnchorPane calendarPane;
     @FXML
-    private ScrollPane hourScrollPane;
-    @FXML
-    private ScrollPane dayScrollPane;
-    @FXML
-    private ScrollPane calendarScrollPane;
+    private ScrollPane hourScrollPane, dayScrollPane, calendarScrollPane;
 
-    private static final int cellHeight = 30;
+    private static final int cellHeight = 34;
     private static final int cellWidth = 200;
-    private static ArrayList<Subject> subjects = new ArrayList<>();
+    private static ArrayList<Subject> subjects;
+    private static boolean[][] calendar;
     private static GridPane calendarGrid;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
 
         subjects = DataBase.getSubjects();
         calendarGrid = createCalendarGrid();
@@ -61,18 +54,10 @@ public class Calendar {
             for (int row = 0; row < 34; row++) {        // Crear todas las filas de cada día
 
                 Button cell = new Button();
-                cell.setStyle("-fx-border-color: #d6d6d6; -fx-border-width: 1px; -fx-background-color: #fff");
 
-                cell.setMinSize(cellWidth, 0);
-                cell.setPrefSize(cellWidth, cellHeight);
-                cell.setMaxSize(cellWidth, cellHeight);
+                int finalCol = col;
+                int finalRow = row;
 
-                cell.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        // Añadir algo al calendario
-                    }
-                });
                 columnGrid.add(cell, 0, row);
 
             }
@@ -82,62 +67,123 @@ public class Calendar {
         return calendarGridPane;
     }
 
-    public static void updateWeek() {
+    private static void resetCalendar() {
 
-        for (Subject subject : subjects) {
+        calendar = new boolean[7][34];
 
-            float[][] schedule = subject.getSchedule();
+        for (int col = 0; col < 7; col++) {
+            GridPane columnGrid = (GridPane) calendarGrid.getChildren().get(col);
+            for (int row = 0; row < 34; row++) {
 
-            for (float[] cl : schedule) {
+                Button cell = (Button) columnGrid.getChildren().get(row);
+                cell.setStyle("-fx-border-color: #d6d6d6; -fx-border-width: 1px; -fx-background-color: #fff");
 
-                int day = (int) cl[0];
-                int hour = (int) (cl[1] * 2) - 10;
-                int time = (int) (cl[2] * 2);
+                cell.setWrapText(true);
+                cell.setText("");
 
-                GridPane col = (GridPane) calendarGrid.getChildren().get(day);
+                cell.setMinSize(cellWidth, 0);
+                cell.setPrefSize(cellWidth, cellHeight);
+                cell.setMaxSize(cellWidth, cellHeight);
 
-                Button subjectButton = new Button(subject.getName() + "\n" + subject.getClassroom());
-                subjectButton.setWrapText(true);
-                subjectButton.setTextAlignment(TextAlignment.CENTER);
-                subjectButton.setStyle("-fx-font: 14 system; -fx-font-weight: bold; -fx-background-color: " + subject.getSubjectColor() +
-                        "; -fx-border-color: #606060; -fx-border-width: 1px; -fx-text-fill: " + subject.getTextColor());
-                subjectButton.setPrefSize(cellWidth, cellHeight * time);
-                col.add(subjectButton, 0, hour);
+                int finalCol = col;
+                int finalRow = row;
 
-                subjectButton.setOnAction(new EventHandler<ActionEvent>() {
+                cell.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
-                    public void handle(ActionEvent event) {
+                    public void handle(ActionEvent ev) {
                         try {
-                            showInfo(subject);
+                            addEvent(finalCol, finalRow);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
-
                 });
 
-
-                for (int t = 0; t < time; t++) {
-                    Button cell = (Button) col.getChildren().get(hour + t);
-                    cell.setPrefHeight(0);
-                    cell.setStyle("-fx-border-width: 0px");
-                }
             }
         }
 
     }
 
-    private static void showInfo(Subject subject) throws IOException {
+    public static void updateWeek() {
+
+        resetCalendar();
+
+        for (Subject subject : subjects) {
+            float[][] schedule = subject.getSchedule();
+            for (float[] date : schedule) {
+
+                Button subjectButton = addEventToCalendar(date, subject.getName() + "\n" + subject.getClassroom(), subject.getSubjectColor(), subject.getTextColor());
+
+                subjectButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent ev) {
+                        try {
+                            showSubject(subject);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        }
+
+        for (Event event : DataBase.getEvents()) {
+
+            Button eventButton = addEventToCalendar(event.getDate(), event.getTitle(), event.getEventColor(), event.getTextColor());
+
+            eventButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent ev) {
+                    try {
+                        showEvent(event);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        }
+
+    }
+
+    private static Button addEventToCalendar(float[] date, String title, String titleColor, String textColor) {
+
+        int day = (int) date[0];
+        int hour = (int) (date[1] * 2) - 10;
+        int time = (int) (date[2] * 2);
+
+        GridPane col = (GridPane) calendarGrid.getChildren().get(day);
+
+        Button button = (Button) col.getChildren().get(hour);
+        button.setText(title);
+        button.setStyle("-fx-font: 15 system; -fx-font-weight: bold; -fx-background-color: " + titleColor +
+                "; -fx-border-color: #606060; -fx-border-width: 1px; -fx-text-fill: " + textColor);
+        button.setPrefSize(cellWidth, cellHeight * time);
+        button.setMaxSize(cellWidth, cellHeight * time);
+        button.setPrefSize(cellWidth, cellHeight * time);
+
+        calendar[day][hour] = true;
+
+        for (int t = 1; t < time; t++) {
+            Button cell = (Button) col.getChildren().get(hour + t);
+            cell.setPrefHeight(0);
+            cell.setStyle("-fx-border-width: 0px");
+            calendar[day][hour + t] = true;
+        }
+
+        return button;
+
+    }
+
+    private static void showSubject(Subject subject) throws IOException {
 
         Stage subjectStage = new Stage();
-        FXMLLoader loader = new FXMLLoader(Calendar.class.getResource("SubjectInfo.fxml"));
+        FXMLLoader loader = new FXMLLoader(Calendar.class.getResource("SubjectPanel.fxml"));
         StackPane subjectPanel = loader.load();
 
-        SubjectInfo info = loader.getController();
-        info.setInfo(subject);
+        SubjectPanel panel = loader.getController();
+        panel.setInfo(subject);
 
         Scene scene = new Scene(subjectPanel, 400, 600);
-
 
         subjectStage.setResizable(false);
         subjectStage.setTitle(subject.getName());
@@ -145,6 +191,73 @@ public class Calendar {
 
         subjectStage.initModality(Modality.APPLICATION_MODAL);
         subjectStage.showAndWait();
+
+    }
+
+
+    private static void showEvent(Event event) throws IOException {
+
+        Stage eventStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(Calendar.class.getResource("EventPanel.fxml"));
+        StackPane eventPanel = loader.load();
+
+        EventPanel panel = loader.getController();
+        panel.setInfo(event);
+
+        Scene scene = new Scene(eventPanel, 400, 600);
+
+        eventStage.setResizable(false);
+        eventStage.setTitle(event.getTitle());
+        eventStage.setScene(scene);
+
+        eventStage.initModality(Modality.APPLICATION_MODAL);
+        eventStage.showAndWait();
+
+    }
+
+    private static void addEvent(int day, int hour) throws IOException {
+
+        Stage addEventStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(Calendar.class.getResource("AddEvent.fxml"));
+        StackPane addEventPanel = loader.load();
+
+        AddEvent panel = loader.getController();
+        panel.setInfo(day, hour);
+
+        Scene scene = new Scene(addEventPanel, 400, 600);
+
+        addEventStage.setResizable(false);
+        addEventStage.setTitle("Agregar evento");
+        addEventStage.setScene(scene);
+
+        addEventStage.initModality(Modality.APPLICATION_MODAL);
+        addEventStage.showAndWait();
+
+    }
+
+    public static boolean checkCalendar(int day, int hour, float time) {
+
+        for (int t = 0; t < time; t++) {
+            if (calendar[day][hour + t]) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    public static boolean checkCalendar(int day, int hour, float time, float[] date) {
+
+        float eventDay = date[0];
+        float eventHour = date[1] * 2 - 10;
+        float eventTime = date[2] * 2;
+
+        for (int t = 0; t < time; t++) {
+            if (calendar[day][hour + t] && (day != eventDay || eventHour > hour + t || eventHour + eventTime < hour + t)){
+                return false;
+            }
+        }
+        return true;
 
     }
 
@@ -163,6 +276,5 @@ public class Calendar {
             ex.printStackTrace();
         }
     }
-
 
 }

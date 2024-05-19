@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class SubjectInfo {
+public class SubjectPanel {
 
     private final String cellStyle = "-fx-alignment: center; al-fx-font: 14 system; -fx-font-weight: bold; -fx-background-color: #fbfbfb;-fx-border-width: 1px; -fx-border-color: #545454; -fx-text-fill: #444;";
 
@@ -15,7 +15,7 @@ public class SubjectInfo {
     @FXML
     private GridPane gradesGrid;
     @FXML
-    private Label weightedAverageLabel, totalAverageLabel, SubjectNameLabel;
+    private Label weightedAverageLabel, totalAverageLabel, subjectNameLabel;
     @FXML
     private TextField targetAverageField;
     @FXML
@@ -25,16 +25,14 @@ public class SubjectInfo {
     @FXML
     private VBox infoBox;
     @FXML
-    private ColorPicker subjectColor;
-    @FXML
-    private ColorPicker textColor;
+    private ColorPicker titleColor, textColor;
 
     private Subject subject;
 
     private boolean inTarget = false;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
 
         accordion.setExpandedPane(gradesPane);
         neededGradeButton.setDisable(true);
@@ -44,8 +42,8 @@ public class SubjectInfo {
 
     public void setInfo(Subject subject) {
         this.subject = subject;
-        SubjectNameLabel.setText(subject.getName() + "\n" + subject.getCode());
-        subjectColor.setValue(stringToColor(subject.getSubjectColor()));
+        subjectNameLabel.setText(subject.getName() + "\n" + subject.getCode());
+        titleColor.setValue(stringToColor(subject.getSubjectColor()));
         textColor.setValue(stringToColor(subject.getTextColor()));
         updateColors();
         setGrades();
@@ -200,8 +198,9 @@ public class SubjectInfo {
 
     }
 
-    public void changeColor(ActionEvent actionEvent) {
-        subject.setColors(colorToString(subjectColor.getValue()), colorToString(textColor.getValue()));
+    @FXML
+    private void changeColor(ActionEvent actionEvent) {
+        subject.setColors(colorToString(titleColor.getValue()), colorToString(textColor.getValue()));
         updateColors();
         Calendar.updateWeek();
     }
@@ -233,8 +232,8 @@ public class SubjectInfo {
     }
 
     private void updateColors() {
-        SubjectNameLabel.setBackground(new Background(new BackgroundFill(stringToColor(subject.getSubjectColor()), null, null)));
-        SubjectNameLabel.setTextFill(stringToColor(subject.getTextColor()));
+        subjectNameLabel.setBackground(new Background(new BackgroundFill(stringToColor(subject.getSubjectColor()), null, null)));
+        subjectNameLabel.setTextFill(stringToColor(subject.getTextColor()));
     }
 
 }

@@ -143,7 +143,7 @@ public class Subject {
     public void setColors(String subjectColor, String textColor) {
         this.subjectColor = subjectColor;
         this.textColor = textColor;
-        DataBase.updateColor(code, subjectColor, textColor);
+        DataBase.updateColor(code, subjectColor, textColor, true);
     }
 
     private void updateInfo() {
