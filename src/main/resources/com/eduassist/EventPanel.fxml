@@ -22,7 +22,7 @@
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
-            <Label fx:id="eventNameLabel" prefHeight="105.0" prefWidth="400.0" style="-fx-alignment: center;" textAlignment="CENTER" textFill="#e4e4e4" wrapText="true" BorderPane.alignment="CENTER">
+            <Label fx:id="eventNameLabel" prefHeight="120.0" prefWidth="400.0" style="-fx-alignment: center;" textAlignment="CENTER" textFill="#e4e4e4" wrapText="true" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -93,7 +93,7 @@
                                           </VBox>
                                           <VBox alignment="CENTER" prefHeight="55.0" prefWidth="170.0">
                                              <children>
-                                                <Label prefHeight="25.0" prefWidth="170.0" style="-fx-alignment: center;" text="DURACIÓN (minutos)">
+                                                <Label prefHeight="25.0" prefWidth="170.0" style="-fx-alignment: center;" text="DURACIÓN (horas)">
                                                    <font>
                                                       <Font name="System Bold" size="16.0" />
                                                    </font>

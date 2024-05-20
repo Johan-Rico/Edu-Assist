@@ -65,7 +65,7 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="55.0" prefWidth="170.0">
                                  <children>
-                                    <Label prefHeight="25.0" prefWidth="170.0" style="-fx-alignment: center;" text="DURACIÓN (minutos)">
+                                    <Label prefHeight="25.0" prefWidth="170.0" style="-fx-alignment: center;" text="DURACIÓN (horas)">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>

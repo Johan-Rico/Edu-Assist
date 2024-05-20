@@ -61,26 +61,28 @@ public class SubjectPanel {
         float[] percentage = subject.getPercentage();
         String[] gradeNames = subject.getGradeNames();
 
-        for (int i = 0; i < percentage.length; i++) {
+        if (percentage != null) {
+            for (int i = 0; i < percentage.length; i++) {
 
-            Label labelPerc = new Label(Integer.toString((int)(percentage[i] * 100)) + "%");
-            Label labelGradeName = new Label(gradeNames[i]);
-            Label labelGrade = new Label();
+                Label labelPerc = new Label(Integer.toString((int) (percentage[i] * 100)) + "%");
+                Label labelGradeName = new Label(gradeNames[i]);
+                Label labelGrade = new Label();
 
-            labelPerc.setPrefSize(100,30);
-            labelGradeName.setPrefSize(200,30);
-            labelGrade.setPrefSize(100,30);
+                labelPerc.setPrefSize(100, 30);
+                labelGradeName.setPrefSize(200, 30);
+                labelGrade.setPrefSize(100, 30);
 
-            labelPerc.setStyle(cellStyle);
-            labelGradeName.setStyle(cellStyle + "-fx-background-color: #e6e6e6");
-            labelGrade.setStyle(cellStyle);
+                labelPerc.setStyle(cellStyle);
+                labelGradeName.setStyle(cellStyle + "-fx-background-color: #e6e6e6");
+                labelGrade.setStyle(cellStyle);
 
-            gradesGrid.add(labelPerc, 0, i);
-            gradesGrid.add(labelGradeName, 1, i);
-            gradesGrid.add(labelGrade, 2, i);
-        }
-        
+                gradesGrid.add(labelPerc, 0, i);
+                gradesGrid.add(labelGradeName, 1, i);
+                gradesGrid.add(labelGrade, 2, i);
+            }
         updateGrades();
+        }
+
     }
 
     private void updateGrades() {
@@ -175,7 +177,7 @@ public class SubjectPanel {
     private void fillInfo() {
 
         addLabel("MATERIA: ", subject.getName());
-        addLabel("CÓDIGO: ", subject.getCode());
+        addLabel("CÓDIGO: ", Integer.toString(subject.getCode()));
         addLabel("PROFESOR: ", subject.getTeacher());
         addLabel("SALÓN: ", subject.getClassroom());
         addLabel("PROMEDIO PONDERADO: ", Float.toString(subject.getWeightedAverage()));

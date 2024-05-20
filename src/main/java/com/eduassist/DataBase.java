@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class DataBase {
 
     private static String username;
+    private static String userName;
     private static ArrayList<Subject> subjects = new ArrayList<>();
     private static ArrayList<Event> events = new ArrayList<>();
 
@@ -15,6 +16,7 @@ public class DataBase {
 
     public static void setData(String user) {
         username = user;
+        Connection conn = null;
         createSubjects();
         createEvents();
     }
@@ -33,9 +35,12 @@ public class DataBase {
             pstmt.setString(1, username);
             pstmt.setString(2, password);
 
+
             ResultSet rs = pstmt.executeQuery();
 
             found = rs.next();
+
+            if (found) { userName = rs.getString("name"); }
 
         } catch (SQLException e) {
             System.err.println("Error al leer datos de la base de datos SQLite: " + e.getMessage());
@@ -67,7 +72,7 @@ public class DataBase {
 
             while (rs.next()) {
 
-                String code = rs.getString("code");
+                int code = rs.getInt("code");
                 String name = rs.getString("name");
                 String teacher = rs.getString("teacher");
                 String classroom = rs.getString("classroom");
@@ -228,14 +233,14 @@ public class DataBase {
 
     }
 
-    public static void updateTarget(String code, float target) {
+    public static void updateTarget(int code, float target) {
 
         Connection conn = null;
 
         try {
             conn = DriverManager.getConnection(subjectDB);
 
-            String sql = String.format("UPDATE %s SET targetAverage = %f WHERE code = '%s'", username, target, code);
+            String sql = String.format("UPDATE %s SET targetAverage = %f WHERE code = %d", username, target, code);
 
             try (Statement stmt = conn.createStatement()) {
                 stmt.executeUpdate(sql);
@@ -255,7 +260,7 @@ public class DataBase {
         }
     }
 
-    public static void updateColor(String code, String titleColor, String textColor, boolean isSubject) {
+    public static void updateColor(int code, String titleColor, String textColor, boolean isSubject) {
 
         Connection conn = null;
 
@@ -266,8 +271,8 @@ public class DataBase {
                 conn = DriverManager.getConnection(eventDB);
             }
 
-            String sql1 = String.format("UPDATE %s SET titleColor = '%s' WHERE code = '%s'", username, titleColor, code);
-            String sql2 = String.format("UPDATE %s SET textColor = '%s' WHERE code = '%s'", username, textColor, code);
+            String sql1 = String.format("UPDATE %s SET titleColor = '%s' WHERE code = %d", username, titleColor, code);
+            String sql2 = String.format("UPDATE %s SET textColor = '%s' WHERE code = %d", username, textColor, code);
 
             try (Statement stmt = conn.createStatement()) {
                 stmt.executeUpdate(sql1);
@@ -324,5 +329,8 @@ public class DataBase {
     public static ArrayList<Event> getEvents() {
         return events;
     }
+
+    public static String getUserName() { return userName; }
+
 }
 

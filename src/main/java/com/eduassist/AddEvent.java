@@ -17,7 +17,9 @@ public class AddEvent {
     @FXML
     private ChoiceBox<String> day, minute, period;
     @FXML
-    private Spinner<Integer> duration, hour;
+    private Spinner<Integer> hour;
+    @FXML
+    private Spinner<Double> duration;
     @FXML
     private ColorPicker eventColor, textColor;
     @FXML
@@ -31,7 +33,7 @@ public class AddEvent {
 
         day.getItems().addAll(days);
         hour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12));
-        duration.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(30, 1020, 120, 30));
+        duration.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.5, 17.0, 2.0, 0.5));
         minute.getItems().addAll("00", "30");
         period.getItems().addAll("AM", "PM");
 
@@ -83,7 +85,7 @@ public class AddEvent {
 
         int selectedDay = day.getSelectionModel().getSelectedIndex();
         float selectedHour = hour.getValue();
-        float selectedDuration = duration.getValue() / 60f;
+        double selectedDuration = duration.getValue();
         String selectedPeriod = period.getValue();
 
         if (selectedHour < 5 && selectedPeriod.equals("AM")) {

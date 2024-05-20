@@ -45,7 +45,7 @@ public class Event {
     public void setColors(String eventColor, String textColor) {
         this.eventColor = eventColor;
         this.textColor = textColor;
-        DataBase.updateColor(Integer.toString(code), eventColor, textColor, false);
+        DataBase.updateColor(code, eventColor, textColor, false);
     }
 
     public int getCode() {

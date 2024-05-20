@@ -2,7 +2,7 @@ package com.eduassist;
 
 public class Subject {
 
-    private final String code;
+    private final int code;
     private final String name;
     private final String teacher;
     private final String classroom;
@@ -20,15 +20,12 @@ public class Subject {
     private String subjectColor;
     private String textColor;
 
-    public Subject(String code, String name, String teacher, String classroom, String percentage, String grades, String gradeNames, String schedule, int credits, int umes, float targetAverage, String subjectColor, String textColor) {
+    public Subject(int code, String name, String teacher, String classroom, String percentage, String grades, String gradeNames, String schedule, int credits, int umes, float targetAverage, String subjectColor, String textColor) {
 
         this.code = code;
         this.name = name;
         this.teacher = teacher;
         this.classroom = classroom;
-        this.percentage = transformGrades(percentage);
-        this.grades = transformGrades(grades);
-        this.gradeNames = gradeNames.split(",");
         this.schedule = transformSchedule(schedule);
         this.credits = credits;
         this.umes = umes;
@@ -36,16 +33,29 @@ public class Subject {
         this.subjectColor = subjectColor;
         this.textColor = textColor;
 
-        this.totalAverage = calculateTotalAverage(this.percentage, this.grades);
-        this.weightedAverage = calculateWeightedAverage(this.percentage, this.grades);
-        this.neededGrade = calculateNeededGrade(3, this.percentage, this.grades);
-        this.targetGrade = calculateNeededGrade(this.targetAverage, this.percentage, this.grades);
-
+        if (grades != null) {
+            this.percentage = transformGrades(percentage);
+            this.grades = transformGrades(grades);
+            this.gradeNames = gradeNames.split(",");
+            this.totalAverage = calculateTotalAverage(this.percentage, this.grades);
+            this.weightedAverage = calculateWeightedAverage(this.percentage, this.grades);
+            this.neededGrade = calculateNeededGrade(3, this.percentage, this.grades);
+            this.targetGrade = calculateNeededGrade(this.targetAverage, this.percentage, this.grades);
+        } else {
+            this.percentage = null;
+            this.grades = null;
+            this.gradeNames = null;
+            this.totalAverage = 0;
+            this.weightedAverage = 0;
+            this.neededGrade = 0;
+            this.targetGrade = 0;
+        }
     }
 
     // ------------------------ //   TRANSFORMAR DATOS STRING   // ------------------------ //
 
     private float[] transformGrades(String txt) {
+
         String[] stringList = txt.split(",");
         float[] grades = new float[stringList.length];
 
@@ -147,15 +157,17 @@ public class Subject {
     }
 
     private void updateInfo() {
-        this.totalAverage = calculateTotalAverage(this.percentage, this.grades);
-        this.weightedAverage = calculateWeightedAverage(this.percentage, this.grades);
-        this.neededGrade = calculateNeededGrade(3, this.percentage, this.grades);
-        this.targetGrade = calculateNeededGrade(this.targetAverage, this.percentage, this.grades);
+        if (grades != null) {
+            this.totalAverage = calculateTotalAverage(this.percentage, this.grades);
+            this.weightedAverage = calculateWeightedAverage(this.percentage, this.grades);
+            this.neededGrade = calculateNeededGrade(3, this.percentage, this.grades);
+            this.targetGrade = calculateNeededGrade(this.targetAverage, this.percentage, this.grades);
+        }
     }
 
     // ------------------------ //   GET   // ------------------------ //
 
-    public String getCode() {
+    public int getCode() {
         return this.code;
     }
 

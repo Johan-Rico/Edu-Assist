@@ -5,10 +5,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.awt.Desktop;
 import java.net.URI;
+
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
@@ -21,6 +24,8 @@ public class Calendar {
     private AnchorPane calendarPane;
     @FXML
     private ScrollPane hourScrollPane, dayScrollPane, calendarScrollPane;
+    @FXML
+    private Label userNameLabel;
 
     private static final int cellHeight = 34;
     private static final int cellWidth = 200;
@@ -31,6 +36,7 @@ public class Calendar {
     @FXML
     private void initialize() {
 
+        userNameLabel.setText(DataBase.getUserName());
         subjects = DataBase.getSubjects();
         calendarGrid = createCalendarGrid();
         updateWeek();
@@ -79,6 +85,7 @@ public class Calendar {
                 cell.setStyle("-fx-border-color: #d6d6d6; -fx-border-width: 1px; -fx-background-color: #fff");
 
                 cell.setWrapText(true);
+                cell.setTextAlignment(TextAlignment.CENTER);
                 cell.setText("");
 
                 cell.setMinSize(cellWidth, 0);
@@ -187,6 +194,7 @@ public class Calendar {
 
         subjectStage.setResizable(false);
         subjectStage.setTitle(subject.getName());
+        subjectStage.getIcons().add(Main.getIcon());
         subjectStage.setScene(scene);
 
         subjectStage.initModality(Modality.APPLICATION_MODAL);
@@ -208,6 +216,7 @@ public class Calendar {
 
         eventStage.setResizable(false);
         eventStage.setTitle(event.getTitle());
+        eventStage.getIcons().add(Main.getIcon());
         eventStage.setScene(scene);
 
         eventStage.initModality(Modality.APPLICATION_MODAL);
@@ -228,6 +237,7 @@ public class Calendar {
 
         addEventStage.setResizable(false);
         addEventStage.setTitle("Agregar evento");
+        addEventStage.getIcons().add(Main.getIcon());
         addEventStage.setScene(scene);
 
         addEventStage.initModality(Modality.APPLICATION_MODAL);
@@ -235,7 +245,7 @@ public class Calendar {
 
     }
 
-    public static boolean checkCalendar(int day, int hour, float time) {
+    public static boolean checkCalendar(int day, int hour, Double time) {
 
         for (int t = 0; t < time; t++) {
             if (calendar[day][hour + t]) {
@@ -246,14 +256,14 @@ public class Calendar {
 
     }
 
-    public static boolean checkCalendar(int day, int hour, float time, float[] date) {
+    public static boolean checkCalendar(int day, int hour, Double time, float[] date) {
 
         float eventDay = date[0];
         float eventHour = date[1] * 2 - 10;
         float eventTime = date[2] * 2;
 
         for (int t = 0; t < time; t++) {
-            if (calendar[day][hour + t] && (day != eventDay || eventHour > hour + t || eventHour + eventTime < hour + t)){
+            if (calendar[day][hour + t] && (day != eventDay || eventHour > hour + t || eventHour + eventTime < hour + t)) {
                 return false;
             }
         }
@@ -261,20 +271,27 @@ public class Calendar {
 
     }
 
-    public void openInteractiva(ActionEvent actionEvent) {
+    private void openLink(String link) {
         try {
-            Desktop.getDesktop().browse(new URI("https://interactivavirtual.eafit.edu.co/"));
+            Desktop.getDesktop().browse(new URI(link));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void openReservas(ActionEvent actionEvent) {
-        try {
-            Desktop.getDesktop().browse(new URI("https://bdigital.spapps.eafit.edu.co/openroom/index.php"));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    @FXML
+    private void openInteractiva(ActionEvent actionEvent) {
+        openLink("https://interactivavirtual.eafit.edu.co/");
+    }
+
+    @FXML
+    private void openReservas(ActionEvent actionEvent) {
+        openLink("https://bdigital.spapps.eafit.edu.co/openroom/index.php");
+    }
+
+    @FXML
+    private void openEpik(ActionEvent actionEvent) {
+        openLink("https://www.eafit.edu.co/epik");
     }
 
 }

@@ -26,7 +26,9 @@ public class EventPanel {
     @FXML
     private ChoiceBox<String> day, minute, period;
     @FXML
-    private Spinner<Integer> duration, hour;
+    private Spinner<Integer> hour;
+    @FXML
+    private Spinner<Double> duration;
 
     private final String[] days = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
     private Event event;
@@ -37,7 +39,7 @@ public class EventPanel {
         accordion.setExpandedPane(infoPane);
         day.getItems().addAll(days);
         hour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12));
-        duration.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(30, 1020, 120, 30));
+        duration.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1.0, 17.0, 2.0, 0.5));
         minute.getItems().addAll("00", "30");
         period.getItems().addAll("AM", "PM");
 
@@ -72,12 +74,12 @@ public class EventPanel {
         }
 
         if (date[1] % 2 == 0) {
-            minute.setValue("00");
-        } else {
             minute.setValue("30");
+        } else {
+            minute.setValue("00");
         }
 
-        duration.getValueFactory().setValue((int) (date[2] * 60));
+        duration.getValueFactory().setValue((double) date[2] );
         hour.getValueFactory().setValue(hourValue);
 
     }
@@ -130,7 +132,7 @@ public class EventPanel {
 
         int selectedDay = day.getSelectionModel().getSelectedIndex();
         float selectedHour = hour.getValue();
-        float selectedDuration = duration.getValue() / 60f;
+        Double selectedDuration = duration.getValue();
         String selectedPeriod = period.getValue();
 
         if (selectedHour < 5 && selectedPeriod.equals("AM")) {
