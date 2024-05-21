@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    private static final Image icon = new Image("file:" + Main.class.getResource("images/Icon.png").getPath().replace("%20", " "));
+    private static final Image icon = new Image(Main.class.getResourceAsStream("/images/icon.png"));
     private static Stage stg;
 
     @Override

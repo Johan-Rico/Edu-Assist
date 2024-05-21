@@ -73,10 +73,10 @@ public class EventPanel {
             period.setValue("AM");
         }
 
-        if (date[1] % 2 == 0) {
-            minute.setValue("30");
-        } else {
+        if ((date[1] * 2) % 2 == 0) {
             minute.setValue("00");
+        } else {
+            minute.setValue("30");
         }
 
         duration.getValueFactory().setValue((double) date[2] );

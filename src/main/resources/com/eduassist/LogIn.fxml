@@ -42,7 +42,7 @@
       </Label>
       <ImageView fitHeight="62.0" fitWidth="250.0" layoutX="189.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/Logo.png" />
+            <Image url="@../../images/loginLogo.png" />
          </image>
       </ImageView>
    </AnchorPane>

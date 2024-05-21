@@ -1,5 +1,7 @@
 package com.eduassist;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -10,9 +12,36 @@ public class DataBase {
     private static ArrayList<Subject> subjects = new ArrayList<>();
     private static ArrayList<Event> events = new ArrayList<>();
 
-    private static final String userLoginDB = "jdbc:sqlite:src/DataBase/userLogIn.db";
-    private static final String subjectDB = "jdbc:sqlite:src/DataBase/Subject.db";
-    private static final String eventDB = "jdbc:sqlite:src/DataBase/Event.db";
+    //*
+    // -----------------> para programar el código en el IDE
+
+    private static final String userLoginDB = "jdbc:sqlite:DataBase/userLogIn.db";
+    private static final String subjectDB = "jdbc:sqlite:DataBase/Subject.db";
+    private static final String eventDB = "jdbc:sqlite:DataBase/Event.db";
+
+    //*/
+
+
+
+    /*
+    // -----------------> para crear el .jar
+
+    private static final String path;
+
+    static {
+        try {
+            path = new File(LogIn.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final String userLoginDB = "jdbc:sqlite:" + path + "/DataBase/userLogIn.db";
+    private static final String subjectDB = "jdbc:sqlite:" + path + "/DataBase/Subject.db";
+    private static final String eventDB = "jdbc:sqlite:" + path + "/DataBase/Event.db";
+
+    //*/
+
 
     public static void setData(String user) {
         username = user;

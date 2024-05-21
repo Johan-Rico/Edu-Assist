@@ -7,6 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class LogIn {
 
@@ -25,11 +26,11 @@ public class LogIn {
         username.requestFocus();
     }
 
-        public void userLogIn(ActionEvent event) throws IOException {
+        public void userLogIn(ActionEvent event) throws IOException, URISyntaxException {
         checkLogin();
     }
 
-    private void checkLogin() throws IOException {
+    private void checkLogin() throws IOException, URISyntaxException {
         Main m = new Main();
         String user = username.getText();
         String pass = password.getText();
@@ -37,7 +38,7 @@ public class LogIn {
         if (DataBase.checkUserData(user, pass)) {
             errorLabel.setVisible(false);
             DataBase.setData(user);
-            m.changeScene("Calendar.fxml", "Edu-Assist");
+            m.changeScene("Calendar.fxml", "EduAssist");
 
         }
         else if (user.isEmpty() || pass.isEmpty()) {

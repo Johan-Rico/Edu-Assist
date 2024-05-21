@@ -393,7 +393,7 @@
                      <children>
                         <ImageView fitHeight="86.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/Logo2.png" />
+                              <Image url="@../../images/calendarLogo.png" />
                            </image>
                         </ImageView>
                      </children>
