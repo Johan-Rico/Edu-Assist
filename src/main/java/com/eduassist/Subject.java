@@ -19,6 +19,7 @@ public class Subject {
     private float targetAverage;
     private String subjectColor;
     private String textColor;
+    private final boolean isEmpty;
 
     public Subject(int code, String name, String teacher, String classroom, String percentage, String grades, String gradeNames, String schedule, int credits, int umes, float targetAverage, String subjectColor, String textColor) {
 
@@ -49,6 +50,12 @@ public class Subject {
             this.weightedAverage = 0;
             this.neededGrade = 0;
             this.targetGrade = 0;
+        }
+
+        if (this.percentage == null) {
+            isEmpty = true;
+        } else {
+            isEmpty = false;
         }
     }
 
@@ -233,5 +240,9 @@ public class Subject {
 
     public String getTextColor() {
         return this.textColor;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
     }
 }

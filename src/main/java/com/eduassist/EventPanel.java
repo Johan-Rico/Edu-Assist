@@ -66,11 +66,14 @@ public class EventPanel {
         day.setValue(days[(int) date[0]]);
         int hourValue = (int) date[1];
 
-        if (hourValue > 12) {
-            hourValue -= 12;
+        if (hourValue >= 12) {
             period.setValue("PM");
         } else {
             period.setValue("AM");
+        }
+
+        if (hourValue > 12) {
+            hourValue -= 12;
         }
 
         if ((date[1] * 2) % 2 == 0) {

@@ -2,6 +2,7 @@ package com.eduassist;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class DataBase {
     private static String userName;
     private static ArrayList<Subject> subjects = new ArrayList<>();
     private static ArrayList<Event> events = new ArrayList<>();
+
 
     //*
     // -----------------> para programar el código en el IDE
@@ -22,7 +24,6 @@ public class DataBase {
     //*/
 
 
-
     /*
     // -----------------> para crear el .jar
 
@@ -30,15 +31,15 @@ public class DataBase {
 
     static {
         try {
-            path = new File(LogIn.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+            path = new File(LogIn.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + FileSystems.getDefault().getSeparator();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static final String userLoginDB = "jdbc:sqlite:" + path + "/DataBase/userLogIn.db";
-    private static final String subjectDB = "jdbc:sqlite:" + path + "/DataBase/Subject.db";
-    private static final String eventDB = "jdbc:sqlite:" + path + "/DataBase/Event.db";
+    private static final String userLoginDB = "jdbc:sqlite:" + path + "DataBase/userLogIn.db";
+    private static final String subjectDB = "jdbc:sqlite:" + path + "DataBase/Subject.db";
+    private static final String eventDB = "jdbc:sqlite:" + path + "DataBase/Event.db";
 
     //*/
 
@@ -362,4 +363,3 @@ public class DataBase {
     public static String getUserName() { return userName; }
 
 }
-

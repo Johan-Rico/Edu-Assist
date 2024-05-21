@@ -55,7 +55,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                      <content>
-                        <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" vvalue="1.0">
+                        <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                            <content>
                               <VBox alignment="TOP_CENTER" prefHeight="552.0" prefWidth="385.0" spacing="10.0" style="-fx-background-color: #f9f9f9;">
                                  <children>

@@ -19,7 +19,7 @@ public class SubjectPanel {
     @FXML
     private TextField targetAverageField;
     @FXML
-    private TitledPane gradesPane;
+    private TitledPane gradesPane, infoPane;
     @FXML
     private Accordion accordion;
     @FXML
@@ -41,6 +41,7 @@ public class SubjectPanel {
     }
 
     public void setInfo(Subject subject) {
+
         this.subject = subject;
         subjectNameLabel.setText(subject.getName() + "\n" + subject.getCode());
         titleColor.setValue(stringToColor(subject.getSubjectColor()));
@@ -52,8 +53,14 @@ public class SubjectPanel {
         totalAverageLabel.setText(Float.toString(subject.getTotalAverage()));
         targetAverageField.setText(Float.toString(subject.getTargetAverage()));
 
+        if (subject.isEmpty()) {
+            gradesPane.setDisable(true);
+            accordion.setExpandedPane(infoPane);
+        }
+
         checkText();
         fillInfo();
+
     }
 
     private void setGrades() {
@@ -180,8 +187,10 @@ public class SubjectPanel {
         addLabel("CÓDIGO: ", Integer.toString(subject.getCode()));
         addLabel("PROFESOR: ", subject.getTeacher());
         addLabel("SALÓN: ", subject.getClassroom());
-        addLabel("PROMEDIO PONDERADO: ", Float.toString(subject.getWeightedAverage()));
-        addLabel("PROMEDIO TOTAL: ", Float.toString(subject.getTotalAverage()));
+        if (!subject.isEmpty()) {
+            addLabel("PROMEDIO PONDERADO: ", Float.toString(subject.getWeightedAverage()));
+            addLabel("PROMEDIO TOTAL: ", Float.toString(subject.getTotalAverage()));
+        }
         addLabel("CRÉDITOS: ", Integer.toString(subject.getCredits()));
         addLabel("UMES: ", Integer.toString(subject.getUmes()));
 
