@@ -39,7 +39,7 @@ public class EventPanel {
         accordion.setExpandedPane(infoPane);
         day.getItems().addAll(days);
         hour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12));
-        duration.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1.0, 17.0, 2.0, 0.5));
+        duration.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.5, 17.0, 2.0, 0.5));
         minute.getItems().addAll("00", "30");
         period.getItems().addAll("AM", "PM");
 
